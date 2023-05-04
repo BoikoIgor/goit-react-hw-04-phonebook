@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Component, useState } from 'react';
+import { useState } from 'react';
 // import { nanoid } from 'nanoid';
 // const INITIAL_STATE = { name: '', number: '' };
 

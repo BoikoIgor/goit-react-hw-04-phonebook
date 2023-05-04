@@ -1,4 +1,4 @@
-import { Component, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout } from './Layout/Layout';
 import { GlobalStyle } from './GlobalStyle';
 import { nanoid } from 'nanoid';
@@ -83,21 +83,32 @@ const initialContacts = [
 //   }
 // }
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(
+    () => JSON.parse(window.localStorage.getItem('contacts')) ?? initialContacts
+  );
   const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  const onChangeInput = evt => {
+    setFilter(evt.target.value);
+  };
 
   const addContact = ({ name, number }) => {
     contacts.some(
       contact => contact.name.toLocaleLowerCase() === name.toLocaleLowerCase()
     )
       ? alert(`${name} is already in contacts`)
-      : setContacts(
-          [...contacts].push({
+      : setContacts([
+          ...contacts,
+          {
             id: nanoid(6),
             name: name,
             number: number,
-          })
-        );
+          },
+        ]);
   };
 
   const delContact = id =>
@@ -110,7 +121,7 @@ export const App = () => {
         <ContactForm addContact={addContact} />
 
         <h2>Contacts</h2>
-        <Filter filter={filter} onChangeInput={setFilter} />
+        <Filter filter={filter} onChangeInput={onChangeInput} />
         <ContactList contacts={contacts} delContact={delContact} />
       </div>
       <GlobalStyle />
