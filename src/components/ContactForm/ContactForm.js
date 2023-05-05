@@ -84,7 +84,12 @@ export const ContactForm = ({ addContact }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const onSubmit = () => addContact({ name, number });
+  const onSubmit = e => {
+    e.preventDefault();
+    addContact({ name, number });
+    setName('');
+    setNumber('');
+  };
 
   return (
     <form

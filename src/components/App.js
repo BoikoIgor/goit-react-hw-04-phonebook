@@ -114,6 +114,13 @@ export const App = () => {
   const delContact = id =>
     setContacts(contacts.filter(contact => contact.id !== id));
 
+  const filtering = () => {
+    const filteredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+    return filteredContacts;
+  };
+
   return (
     <Layout>
       <div>
@@ -122,7 +129,7 @@ export const App = () => {
 
         <h2>Contacts</h2>
         <Filter filter={filter} onChangeInput={onChangeInput} />
-        <ContactList contacts={contacts} delContact={delContact} />
+        <ContactList contacts={filtering()} delContact={delContact} />
       </div>
       <GlobalStyle />
     </Layout>
